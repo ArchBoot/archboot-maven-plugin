@@ -1,0 +1,20 @@
+name: CD APP
+
+run-name: ${{ format('Deploy `{0}`', github.sha) }}
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+jobs:
+  cd:
+    name: ArchBoot
+    uses: ArchBoot/reusables-worklows/.github/workflows/reusable-cd.yml@main
+    secrets: inherit
