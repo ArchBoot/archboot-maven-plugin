@@ -27,10 +27,12 @@ public class ConstantsPlugin {
     public final static String SCAFFOLD_FILE = "scaffold.yml";
     public static final String SCAFFOLD = "scaffold";
     public static final String DATA = "data";
-    public static final String ID = "id";
     public final static String PACKAGE = "package";
     public final static String ANNOTATIONS = "annotations";
     public final static String CONFIG = "config";
     public final static String EXTENSION = "extension";
 
+    public static final String IMPORTS = "imports";
+    public final static String TEMPLATE_FTL_PATH = "templates/ftl";
+    public final static String TEMPLATE_RAW_PATH = "templates/raw";
 }
