@@ -23,4 +23,14 @@ public class ConstantsPlugin {
     public final static String FALSE = "false";
     public final static String OUTPUT = "output";
     public final static String USER_DIR = "user.dir";
+
+    public final static String SCAFFOLD_FILE = "scaffold.yml";
+    public static final String SCAFFOLD = "scaffold";
+    public static final String DATA = "data";
+    public static final String ID = "id";
+    public final static String PACKAGE = "package";
+    public final static String ANNOTATIONS = "annotations";
+    public final static String CONFIG = "config";
+    public final static String EXTENSION = "extension";
+
 }

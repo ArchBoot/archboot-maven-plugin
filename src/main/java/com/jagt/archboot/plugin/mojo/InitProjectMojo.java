@@ -10,6 +10,7 @@ import com.jagt.archboot.plugin.model.enums.NormalizationType;
 import com.jagt.archboot.plugin.mojo.abstracts.InitProjectAbstractMojo;
 import com.jagt.archboot.plugin.utils.ConstantsPlugin;
 import com.jagt.archboot.plugin.utils.Normalizer;
+import com.jagt.archboot.plugin.utils.YamlReader;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -38,6 +39,8 @@ public class InitProjectMojo extends InitProjectAbstractMojo {
         File projectDir = validateOutputDir();
 
         ScaffoldModel scaffold = generateScaffoldModel(architectureType, configuration);
+        generateScaffoldYaml(scaffold, projectDir);
+        
     }
 
     private void normalizeInputs() {
@@ -116,5 +119,14 @@ public class InitProjectMojo extends InitProjectAbstractMojo {
                 .data(data)
                 .architecture(architecture)
                 .build();
+    }
+
+    private void generateScaffoldYaml(ScaffoldModel scaffoldModel, File projectDir) throws MojoExecutionException {
+        try {
+            getLog().info("> Generating scaffold.yml...");
+            YamlReader.write(scaffoldModel, projectDir);
+        } catch (IOException e) {
+            throw new MojoExecutionException("[ERROR] Error creating project: " + e.getMessage(), e);
+        }
     }
 }
