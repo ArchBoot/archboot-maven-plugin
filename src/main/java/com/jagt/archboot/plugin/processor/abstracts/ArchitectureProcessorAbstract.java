@@ -35,7 +35,7 @@ public abstract class ArchitectureProcessorAbstract implements ArchitectureProce
 
             File resourcesDir = resolveResourcesDir(projectDir, dataModel);
             log.info("> [Processor] Generating application resource...");
-            generateResources(dataModel, resourcesDir, projectDir, log);
+            generateResources(dataModel, resourcesDir);
 
             log.info("> [Processor] Generating left resources...");
             generateItemsBasic(projectDir, dataModel, log);
@@ -74,7 +74,7 @@ public abstract class ArchitectureProcessorAbstract implements ArchitectureProce
         );
     }
 
-    protected void generateResources(DataModel dataModel, File resourcesDir, File projectDir, Log log) throws IOException {
+    protected void generateResources(DataModel dataModel, File resourcesDir) throws IOException {
 
         String configFile = ConstantsPlugin.YAML.equalsIgnoreCase(dataModel.getConfig().getExtension().name())
                 ? ConstantsPlugin.APPLICATION_YML : ConstantsPlugin.APPLICATION_PROPERTIES;
@@ -82,7 +82,7 @@ public abstract class ArchitectureProcessorAbstract implements ArchitectureProce
         Map<String, Object> model = new HashMap<>();
 
         FreeMarkerGenerator.generate(
-                ConstantsPlugin.SHARED + "/" + configFile + ConstantsPlugin.DOT_FTL,
+                ConstantsPlugin.SHARED + ConstantsPlugin.CLASSPATH_SEPARATOR + configFile + ConstantsPlugin.DOT_FTL,
                 model,
                 new File(resourcesDir, configFile)
         );

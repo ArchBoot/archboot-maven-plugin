@@ -1,5 +1,7 @@
 package com.jagt.archboot.plugin.model;
 
+import com.jagt.archboot.plugin.utils.ConstantsPlugin;
+
 public class DataModel {
     private String artifactId;
     private String groupId;
@@ -59,7 +61,7 @@ public class DataModel {
     }
 
     public String getPackagePath() {
-        return packageName.replace(".", "/");
+        return packageName.replace(".", ConstantsPlugin.CLASSPATH_SEPARATOR);
     }
 
     public AnnotationModel getAnnotation() {

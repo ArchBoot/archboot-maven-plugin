@@ -4,13 +4,13 @@ import com.jagt.archboot.plugin.model.enums.ArchitectureType;
 import com.jagt.archboot.plugin.processor.ArchitectureProcessor;
 import com.jagt.archboot.plugin.processor.impl.MvcArchitectureProcessor;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 public class ArchitectureProcessorFactory {
     private ArchitectureProcessorFactory() {}
 
-    private static final Map<ArchitectureType, ArchitectureProcessor> PROCESSORS = new HashMap<>();
+    private static final Map<ArchitectureType, ArchitectureProcessor> PROCESSORS = new EnumMap<>(ArchitectureType.class);
 
     static {
         PROCESSORS.put(ArchitectureType.MVC, new MvcArchitectureProcessor());

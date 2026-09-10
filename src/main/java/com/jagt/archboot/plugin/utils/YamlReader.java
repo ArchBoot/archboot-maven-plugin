@@ -17,6 +17,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class YamlReader {
+    private YamlReader() {}
+
     public static void write(ScaffoldModel scaffoldModel, File projectDir) throws IOException {
         File scaffoldFile = new File(projectDir, ConstantsPlugin.SCAFFOLD_FILE);
 

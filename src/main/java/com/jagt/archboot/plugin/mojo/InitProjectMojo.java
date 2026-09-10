@@ -40,7 +40,7 @@ public class InitProjectMojo extends InitProjectAbstractMojo {
 
         ScaffoldModel scaffold = generateScaffoldModel(architectureType, configuration);
         generateScaffoldYaml(scaffold, projectDir);
-        
+
     }
 
     private void normalizeInputs() {
@@ -60,19 +60,13 @@ public class InitProjectMojo extends InitProjectAbstractMojo {
 
     private File validateOutputDir() throws MojoExecutionException {
         getLog().info("> Validating output directory :: " + outputDir);
-        File baseDir;
+        File baseDir = (outputDir == null)
+                ? new File(System.getProperty(ConstantsPlugin.USER_DIR))
+                : outputDir;
+        String output = baseDir.getPath();
 
-        if (outputDir == null) {
-            baseDir = new File(System.getProperty(ConstantsPlugin.USER_DIR));
-        }
-
-        String output = outputDir.getPath();
-
-        if ("/".equals(output) || "\\".equals(output)) {
-            baseDir = new File(System.getProperty(ConstantsPlugin.USER_DIR));
+        if (ConstantsPlugin.CLASSPATH_SEPARATOR.equals(output) || "\\".equals(output)) {
             return baseDir;
-        } else {
-            baseDir = outputDir;
         }
 
         File projectDir = new File(baseDir, artifactId);
@@ -90,7 +84,7 @@ public class InitProjectMojo extends InitProjectAbstractMojo {
         return projectDir;
     }
 
-    private ScaffoldModel generateScaffoldModel(ArchitectureType architecture, ConfigApplicationType configuration) throws MojoExecutionException {
+    private ScaffoldModel generateScaffoldModel(ArchitectureType architecture, ConfigApplicationType configuration) {
         getLog().info("> Generating scaffold model");
 
         AnnotationModel annotation = AnnotationModel.builder()

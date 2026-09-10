@@ -3,6 +3,7 @@ package com.jagt.archboot.plugin.utils;
 import com.jagt.archboot.plugin.model.enums.NormalizationType;
 
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public class Normalizer {
     private Normalizer() {}
@@ -19,20 +20,21 @@ public class Normalizer {
             "switch", "synchronized", "this", "throw", "throws",
             "transient", "try", "void", "volatile", "while"
     );
+    private static final Pattern ENUM_SEPARATOR = Pattern.compile("[-\\s]+");
 
     public static String normalize(String raw, NormalizationType type) {
         return type.apply(raw);
     }
 
     public static String normalizeEnum(String raw) {
-        return raw.toUpperCase().replaceAll("[-\\s]+]", "_");
+        return ENUM_SEPARATOR.matcher(raw.toUpperCase()).replaceAll("_");
     }
 
     public static String normalizeArtifactId(String raw) {
         String value = raw.replaceAll("([a-z])([A-Z])", "$1-$2") // CamelCase -> kebab-case
                 .toLowerCase()
                 .replaceAll("[_/]", "-")
-                .replaceAll("\\.", "-")
+                .replace(".", "-")
                 .replaceAll("\\s+", "-")
                 .replaceAll("[^a-z0-9-]", "-")
                 .replaceAll("-{2,}", "-")
@@ -43,7 +45,7 @@ public class Normalizer {
 
     public static String normalizePackageName(String raw) {
         String value = raw.toLowerCase()
-                .replace("/", ".")
+                .replace(ConstantsPlugin.CLASSPATH_SEPARATOR, ".")
                 .replace("-", "_")
                 .replaceAll("[^a-z0-9._]", ".")
                 .replaceAll("\\.+", ".")
