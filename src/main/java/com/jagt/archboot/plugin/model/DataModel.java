@@ -58,6 +58,10 @@ public class DataModel {
         this.packageName = packageName;
     }
 
+    public String getPackagePath() {
+        return packageName.replace(".", "/");
+    }
+
     public AnnotationModel getAnnotation() {
         return annotation;
     }

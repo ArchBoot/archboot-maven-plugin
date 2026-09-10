@@ -33,6 +33,48 @@ public class ConstantsPlugin {
     public final static String EXTENSION = "extension";
 
     public static final String IMPORTS = "imports";
+    public static final String POM_XML = "pom.xml";
+    public static final String APPLICATION_YML = "application.yml";
+    public static final String APPLICATION_PROPERTIES = "application.properties";
+    public static final String CLASS_NAME = "className";
+    public static final String DOT_GITIGNORE = ".gitignore";
+    public static final String DOT_GITATTRIBUTES = ".gitattributes";
+    public final static String DOT_GITKEEP = ".gitkeep";
+    public static final String MVNW = "mvnw";
+    public static final String WRAPPER = "wrapper";
+    public static final String DOT_MVN = ".mvn";
+    public static final String MVNW_CMD = "mvnw.cmd";
+    public static final String MVNW_PROPERTIES = "maven-wrapper.properties";
+    public static final String DOT_JAVA = ".java";
+    public static final String DOT_FTL = ".ftl";
+    public static final String DOT_RAW = ".raw";
+    public static final String README_MD = "README.md";
     public final static String TEMPLATE_FTL_PATH = "templates/ftl";
     public final static String TEMPLATE_RAW_PATH = "templates/raw";
+    public final static String SHARED = "shared";
+    public final static String POM_SHARED = SHARED + "/" + POM_XML + DOT_FTL;
+    public final static String APP_JAVA_SHARED = SHARED + "/App.java" + DOT_FTL;
+    public final static String README_SHARED = SHARED + "/" + README_MD + DOT_FTL;
+    public final static String GITIGNORE_RAW_SHARED = SHARED + "/" + DOT_GITIGNORE + DOT_RAW;
+    public final static String GITATTRIBUTES_RAW_SHARED = SHARED + "/" + DOT_GITATTRIBUTES + DOT_RAW;
+    public final static String MVNW_RAW_SHARED = SHARED + "/" + MVNW + DOT_RAW;
+    public final static String MVNW_CMD_RAW_SHARED = SHARED + "/" + MVNW_CMD + DOT_RAW;
+    public final static String MVNW_PROPERTIES_RAW_SHARED = SHARED + "/" + MVNW_PROPERTIES + DOT_RAW;
+    public final static String MVNW_PROPERTIES_FIELD = DOT_MVN + "/" + WRAPPER + "/" + MVNW_PROPERTIES;
+
+
+    public final static String SRC = "src";
+    public final static String MAIN = "main";
+    public final static String JAVA = "java";
+    public final static String RESOURCES = "resources";
+    public final static String TEST = "test";
+    public final static String SRC_MAIN_JAVA = SRC + "/" + MAIN + "/" + JAVA + "/";
+    public final static String SRC_MAIN_RESOURCES = SRC + "/" + MAIN + "/" + RESOURCES + "/";
+    public final static String SRC_TEST_JAVA = SRC + "/" + TEST + "/" + JAVA + "/";
+
+    public static final String MODEL = "model";
+    public static final String SERVICE = "service";
+    public static final String CONTROLLER = "controller";
+    public static final String REPOSITORY = "repository";
+
 }
