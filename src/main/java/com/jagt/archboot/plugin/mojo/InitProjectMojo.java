@@ -8,6 +8,8 @@ import com.jagt.archboot.plugin.model.enums.ArchitectureType;
 import com.jagt.archboot.plugin.model.enums.ConfigApplicationType;
 import com.jagt.archboot.plugin.model.enums.NormalizationType;
 import com.jagt.archboot.plugin.mojo.abstracts.InitProjectAbstractMojo;
+import com.jagt.archboot.plugin.processor.ArchitectureProcessor;
+import com.jagt.archboot.plugin.processor.factory.ArchitectureProcessorFactory;
 import com.jagt.archboot.plugin.utils.ConstantsPlugin;
 import com.jagt.archboot.plugin.utils.Normalizer;
 import com.jagt.archboot.plugin.utils.YamlReader;
@@ -41,6 +43,8 @@ public class InitProjectMojo extends InitProjectAbstractMojo {
         ScaffoldModel scaffold = generateScaffoldModel(architectureType, configuration);
         generateScaffoldYaml(scaffold, projectDir);
 
+        ArchitectureProcessor processor = ArchitectureProcessorFactory.get(architectureType);
+        processor.execute(scaffold, projectDir, getLog());
     }
 
     private void normalizeInputs() {

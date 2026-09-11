@@ -30,7 +30,6 @@ public class ConstantsPlugin {
     public static final String SCAFFOLD_FILE = "scaffold.yml";
     public static final String SCAFFOLD = "scaffold";
     public static final String DATA = "data";
-    public static final String PACKAGE = "package";
     public static final String ANNOTATIONS = "annotations";
     public static final String CONFIG = "config";
     public static final String EXTENSION = "extension";

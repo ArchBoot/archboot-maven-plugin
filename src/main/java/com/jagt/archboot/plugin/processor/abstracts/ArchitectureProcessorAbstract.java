@@ -80,6 +80,7 @@ public abstract class ArchitectureProcessorAbstract implements ArchitectureProce
                 ? ConstantsPlugin.APPLICATION_YML : ConstantsPlugin.APPLICATION_PROPERTIES;
 
         Map<String, Object> model = new HashMap<>();
+        model.put(ConstantsPlugin.NAME, dataModel.getName());
 
         FreeMarkerGenerator.generate(
                 ConstantsPlugin.SHARED + ConstantsPlugin.CLASSPATH_SEPARATOR + configFile + ConstantsPlugin.DOT_FTL,

@@ -58,7 +58,7 @@ public class YamlReader {
                 ConstantsPlugin.ARTIFACT_ID, dataModel.getArtifactId(),
                 ConstantsPlugin.GROUP_ID, dataModel.getGroupId(),
                 ConstantsPlugin.NAME, dataModel.getName(),
-                ConstantsPlugin.PACKAGE, dataModel.getPackageName(),
+                ConstantsPlugin.PACKAGE_NAME, dataModel.getPackageName(),
                 ConstantsPlugin.ANNOTATIONS, buildAnnotations(dataModel.getAnnotation()),
                 ConstantsPlugin.CONFIG, buildConfig(dataModel.getConfig())
         );

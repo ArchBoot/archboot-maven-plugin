@@ -14,7 +14,7 @@ public class MvcArchitectureProcessor extends ArchitectureProcessorAbstract {
 
     @Override
     protected void buildStructure(ScaffoldModel config, File projectDir, Log log) throws IOException {
-        log.info("  > [Processor::MVC] Generating pom.xml");
+        log.info("  > [Processor] Generating pom.xml");
         pomGenerator.generateStandard(config, projectDir);
 
         DataModel data = config.getData();
@@ -44,6 +44,6 @@ public class MvcArchitectureProcessor extends ArchitectureProcessorAbstract {
 
     @Override
     protected String variantLabel() {
-        return "mvc::mono";
+        return "mvc::monolith";
     }
 }

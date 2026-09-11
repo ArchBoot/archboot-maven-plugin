@@ -12,7 +12,7 @@ public class RawGenerator {
     private RawGenerator() {}
 
     public static void copy(String resourceName, File destination) throws IOException {
-        String fullPath = ConstantsPlugin.CLASSPATH_SEPARATOR + ConstantsPlugin.TEMPLATE_RAW_PATH + resourceName;
+        String fullPath = ConstantsPlugin.CLASSPATH_SEPARATOR + ConstantsPlugin.TEMPLATE_RAW_PATH + ConstantsPlugin.CLASSPATH_SEPARATOR + resourceName;
 
         try (InputStream in = RawGenerator.class.getResourceAsStream(fullPath)) {
             if (in == null) {
