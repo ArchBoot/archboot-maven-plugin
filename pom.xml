@@ -50,6 +50,9 @@
     <properties>
         <mave.compiler.release>17</mave.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <sonar.coverage.exclusions>
+            **/com/jagt/archboot/plugin/model/**
+        </sonar.coverage.exclusions>
     </properties>
 
     <dependencies>
@@ -189,6 +192,11 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>**/com/jagt/archboot/plugin/model/**</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>
