@@ -30,7 +30,7 @@ public abstract class InitProjectAbstractMojo extends AbstractMojo {
     protected String javaVersion;
     @Parameter(property = ConstantsPlugin.SPRING_VERSION, defaultValue = ConstantsPlugin.SPRING_VERSION_V4_0_0)
     protected String springVersion;
-    @Parameter(property = ConstantsPlugin.CONFIGURATION, defaultValue = ConstantsPlugin.YAML)
+    @Parameter(property = ConstantsPlugin.CONFIGURATION, defaultValue = ConstantsPlugin.YML)
     protected String configurationType;
     @Parameter(property = ConstantsPlugin.GIT_KEEP, defaultValue = ConstantsPlugin.FALSE)
     protected boolean gitKeep;

@@ -20,7 +20,7 @@ public class ConstantsPlugin {
     public static final String SPRING_VERSION_V4_0_0 = "4.0.0";
     public static final String CONFIGURATION = "configuration";
     public static final String GIT_KEEP = "gitKeep";
-    public static final String YAML = "yaml";
+    public static final String YML = "yml";
     public static final String MAPSTRUCT = "mapstruct";
     public static final String LOMBOK = "lombok";
     public static final String FALSE = "false";

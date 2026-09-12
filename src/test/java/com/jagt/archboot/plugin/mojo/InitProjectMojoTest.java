@@ -280,4 +280,25 @@ class InitProjectMojoTest {
                 .hasMessageContaining("Error creating project");
     }
 
+    @Test
+    void generatesScaffoldYaml_withGitKeep_happyPath(@TempDir File tempDir) throws Exception {
+        mojo.setOutputDir(tempDir);
+        mojo.setGitKeep(true);
+
+        mojo.execute();
+
+        File projectDir = new File(tempDir, "my-app");
+
+        File scaffold = new File(projectDir, "scaffold.yml");
+
+        assertThat(projectDir).exists().isDirectory();
+        assertThat(scaffold).exists().isFile();
+
+        String content = Files.readString(scaffold.toPath());
+        assertThat(content)
+                .contains("architecture: MVC")
+                .contains("artifactId: my-app")
+                .contains("groupId: com.example");
+    }
+
 }

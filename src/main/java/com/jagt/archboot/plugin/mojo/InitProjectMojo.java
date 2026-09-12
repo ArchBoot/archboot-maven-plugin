@@ -45,10 +45,12 @@ public class InitProjectMojo extends InitProjectAbstractMojo {
 
         ArchitectureProcessor processor = ArchitectureProcessorFactory.get(architectureType);
         processor.execute(scaffold, projectDir, getLog());
+
+        getLog().info("> [Mojo] Successfully building architecture structure");
     }
 
     private void normalizeInputs() {
-        getLog().info("> Normalizing inputs");
+        getLog().info("> [Mojo] Normalizing inputs");
 
         if (StringUtils.isBlank(name)) {
             name = artifactId;
@@ -63,7 +65,7 @@ public class InitProjectMojo extends InitProjectAbstractMojo {
     }
 
     private File validateOutputDir() throws MojoExecutionException {
-        getLog().info("> Validating output directory :: " + outputDir);
+        getLog().info("> [Mojo] Validating output directory :: " + outputDir);
         File baseDir = (outputDir == null)
                 ? new File(System.getProperty(ConstantsPlugin.USER_DIR))
                 : outputDir;
@@ -89,7 +91,7 @@ public class InitProjectMojo extends InitProjectAbstractMojo {
     }
 
     private ScaffoldModel generateScaffoldModel(ArchitectureType architecture, ConfigApplicationType configuration) {
-        getLog().info("> Generating scaffold model");
+        getLog().info("> [Mojo] Generating scaffold model");
 
         AnnotationModel annotation = AnnotationModel.builder()
                 .lombok(lombok)
@@ -121,7 +123,7 @@ public class InitProjectMojo extends InitProjectAbstractMojo {
 
     private void generateScaffoldYaml(ScaffoldModel scaffoldModel, File projectDir) throws MojoExecutionException {
         try {
-            getLog().info("> Generating scaffold.yml...");
+            getLog().info("> [Mojo] Generating scaffold.yml...");
             YamlReader.write(scaffoldModel, projectDir);
         } catch (IOException e) {
             throw new MojoExecutionException("[ERROR] Error creating project: " + e.getMessage(), e);

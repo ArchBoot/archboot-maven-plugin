@@ -26,7 +26,7 @@ public abstract class ArchitectureProcessorAbstract implements ArchitectureProce
         try {
             DataModel dataModel = scaffoldModel.getData();
 
-            log.info("  > [Processor] Building architecture structure for " + variantLabel() + " variant");
+            log.info("> [Processor] Building architecture structure for " + variantLabel() + " variant");
             buildStructure(scaffoldModel, projectDir, log);
 
             File mainSrc = resolveMainSourceDir(projectDir, dataModel);
@@ -76,7 +76,7 @@ public abstract class ArchitectureProcessorAbstract implements ArchitectureProce
 
     protected void generateResources(DataModel dataModel, File resourcesDir) throws IOException {
 
-        String configFile = ConstantsPlugin.YAML.equalsIgnoreCase(dataModel.getConfig().getExtension().name())
+        String configFile = ConstantsPlugin.YML.equalsIgnoreCase(dataModel.getConfig().getExtension().name())
                 ? ConstantsPlugin.APPLICATION_YML : ConstantsPlugin.APPLICATION_PROPERTIES;
 
         Map<String, Object> model = new HashMap<>();
@@ -117,20 +117,37 @@ public abstract class ArchitectureProcessorAbstract implements ArchitectureProce
     }
 
     protected void generateGitKeep(File projectDir, Log log) {
-        File[] children = projectDir.listFiles();
+        generateGitKeepRecursive(projectDir, log);
+    }
+
+    private void generateGitKeepRecursive(File directory, Log log) {
+        File[] children = directory.listFiles();
+
         if (children == null) {
             return;
         }
 
-        if (children.length == 0) {
-            createGitKeep(projectDir, log);
-            return;
-        }
+        boolean hasRealContent = false;
 
         for (File child : children) {
             if (child.isDirectory()) {
-                createGitKeep(child, log);
+                generateGitKeepRecursive(child, log);
+            } else if (!child.getName().equals(ConstantsPlugin.DOT_GITKEEP)) {
+                hasRealContent = true;
             }
+        }
+
+        boolean hasDirectories = false;
+
+        for (File child : children) {
+            if (child.isDirectory()) {
+                hasDirectories = true;
+                break;
+            }
+        }
+
+        if (!hasRealContent && !hasDirectories) {
+            createGitKeep(directory, log);
         }
     }
 
