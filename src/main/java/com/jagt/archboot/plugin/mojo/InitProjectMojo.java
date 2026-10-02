@@ -22,9 +22,31 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
+/**
+ * Goal {@code archboot:init}: generates a new Spring Boot project skeleton.
+ *
+ * <p>The goal validates and normalizes the user input, creates the output directory,
+ * writes a {@code scaffold.yml} descriptor and delegates the creation of the project
+ * structure to the {@link ArchitectureProcessor} that matches the requested architecture.</p>
+ *
+ * <p>It does not require an existing Maven project, so it can be run from any directory:</p>
+ * <pre>{@code
+ * mvn com.jagt.archboot.plugin:archboot-maven-plugin:init \
+ *     -DgroupId=com.example -DartifactId=my-app -Darchitecture=mvc
+ * }</pre>
+ *
+ */
 @Mojo(name = "init", requiresProject = false)
 public class InitProjectMojo extends InitProjectAbstractMojo {
 
+    /**
+     * Executes the goal.
+     *
+     * @throws MojoExecutionException if the architecture or configuration type is invalid,
+     *                                the output directory already exists or cannot be created,
+     *                                or the project generation fails
+     * @throws MojoFailureException   declared by the {@link org.apache.maven.plugin.Mojo} contract
+     */
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         ArchitectureType architectureType = ArchitectureType.fromString(architecture);
@@ -49,6 +71,11 @@ public class InitProjectMojo extends InitProjectAbstractMojo {
         getLog().info("> [Mojo] Successfully building architecture structure");
     }
 
+    /**
+     * Fills in defaults and normalizes the user input: {@code name} falls back to the
+     * artifact id, the artifact id is converted to kebab-case and the package name is
+     * derived from {@code groupId} and {@code artifactId} when not provided.
+     */
     private void normalizeInputs() {
         getLog().info("> [Mojo] Normalizing inputs");
 
@@ -64,6 +91,12 @@ public class InitProjectMojo extends InitProjectAbstractMojo {
         }
     }
 
+    /**
+     * Resolves and creates the project directory ({@code <output>/<artifactId>}).
+     *
+     * @return the project directory, or the base directory itself when it is a filesystem root
+     * @throws MojoExecutionException if the directory already exists or cannot be created
+     */
     private File validateOutputDir() throws MojoExecutionException {
         getLog().info("> [Mojo] Validating output directory :: " + outputDir);
         File baseDir = (outputDir == null)
@@ -90,6 +123,13 @@ public class InitProjectMojo extends InitProjectAbstractMojo {
         return projectDir;
     }
 
+    /**
+     * Builds the {@link ScaffoldModel} from the current Mojo parameters.
+     *
+     * @param architecture  the parsed architecture type
+     * @param configuration the parsed configuration file type
+     * @return the populated scaffold model
+     */
     private ScaffoldModel generateScaffoldModel(ArchitectureType architecture, ConfigApplicationType configuration) {
         getLog().info("> [Mojo] Generating scaffold model");
 
@@ -121,6 +161,13 @@ public class InitProjectMojo extends InitProjectAbstractMojo {
                 .build();
     }
 
+    /**
+     * Writes the {@code scaffold.yml} descriptor into the project directory.
+     *
+     * @param scaffoldModel the model to serialize
+     * @param projectDir    the target project directory
+     * @throws MojoExecutionException if the file cannot be written
+     */
     private void generateScaffoldYaml(ScaffoldModel scaffoldModel, File projectDir) throws MojoExecutionException {
         try {
             getLog().info("> [Mojo] Generating scaffold.yml...");

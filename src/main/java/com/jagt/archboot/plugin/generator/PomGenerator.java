@@ -9,7 +9,17 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Generates the {@code pom.xml} of the new project from the shared FreeMarker template.
+ */
 public class PomGenerator {
+    /**
+     * Writes the standard {@code pom.xml} into the project directory.
+     *
+     * @param scaffold   the scaffold model providing the template data
+     * @param projectDir the project directory
+     * @throws IOException if the template cannot be processed or the file written
+     */
     public void generateStandard(ScaffoldModel scaffold, File projectDir) throws IOException {
         FreeMarkerGenerator.generate(
                 ConstantsPlugin.POM_SHARED,

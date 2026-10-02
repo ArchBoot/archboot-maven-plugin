@@ -7,6 +7,9 @@ import com.jagt.archboot.plugin.processor.impl.MvcArchitectureProcessor;
 import java.util.EnumMap;
 import java.util.Map;
 
+/**
+ * Registry that resolves the {@link ArchitectureProcessor} for an {@link ArchitectureType}.
+ */
 public class ArchitectureProcessorFactory {
     private ArchitectureProcessorFactory() {}
 
@@ -16,6 +19,13 @@ public class ArchitectureProcessorFactory {
         PROCESSORS.put(ArchitectureType.MVC, new MvcArchitectureProcessor());
     }
 
+    /**
+     * Returns the {@link ArchitectureProcessor} registered for the given architecture type.
+     *
+     * @param type the architecture type to resolve
+     * @return the processor implementation for {@code type}
+     * @throws IllegalArgumentException if no processor is registered for {@code type}
+     */
     public static ArchitectureProcessor get(ArchitectureType type) {
         ArchitectureProcessor processor = PROCESSORS.get(type);
 

@@ -2,9 +2,19 @@ package com.jagt.archboot.plugin.generator;
 
 import com.jagt.archboot.plugin.utils.ConstantsPlugin;
 import freemarker.core.ParseException;
-import freemarker.template.*;
+import freemarker.template.Configuration;
+import freemarker.template.MalformedTemplateNameException;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateExceptionHandler;
+import freemarker.template.TemplateNotFoundException;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -12,9 +22,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Utility class that renders FreeMarker templates located under {@code templates/ftl}.
+ */
 public class FreeMarkerGenerator {
     private FreeMarkerGenerator() {}
 
+    /**
+     * Global FreeMarker configuration used to load and process FTL templates.
+     */
     private static final Configuration FTL_CONFIG;
 
     static {
@@ -27,6 +43,15 @@ public class FreeMarkerGenerator {
         FTL_CONFIG.setLogTemplateExceptions(false);
     }
 
+    /**
+     * Renders a template into a file, creating parent directories when needed.
+     * If the model contains an {@code imports} list of strings, it is sorted before rendering.
+     *
+     * @param templateName the template path relative to {@code templates/ftl}
+     * @param model        the data model passed to the template
+     * @param destination  the output file
+     * @throws IOException if the template is missing or invalid, or the file cannot be written
+     */
     public static void generate(String templateName, Map<String, Object> model, File destination) throws IOException {
         try {
             Template template = FTL_CONFIG.getTemplate(templateName);

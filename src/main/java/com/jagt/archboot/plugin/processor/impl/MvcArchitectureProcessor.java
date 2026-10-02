@@ -10,6 +10,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * {@link com.jagt.archboot.plugin.processor.ArchitectureProcessor} for the MVC monolith architecture.
+ * Creates the {@code controller}, {@code service}, {@code repository} and {@code model} packages.
+ *
+ * @since 0.1.0
+ */
 public class MvcArchitectureProcessor extends ArchitectureProcessorAbstract {
 
     @Override

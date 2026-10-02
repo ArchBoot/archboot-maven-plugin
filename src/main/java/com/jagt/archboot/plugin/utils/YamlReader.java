@@ -16,9 +16,19 @@ import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Serializes a {@link ScaffoldModel} to the {@code scaffold.yml} descriptor.
+ */
 public class YamlReader {
     private YamlReader() {}
 
+    /**
+     * Writes {@code scaffold.yml} into the project directory.
+     *
+     * @param scaffoldModel the model to serialize
+     * @param projectDir    the target directory
+     * @throws IOException if the file cannot be written
+     */
     public static void write(ScaffoldModel scaffoldModel, File projectDir) throws IOException {
         File scaffoldFile = new File(projectDir, ConstantsPlugin.SCAFFOLD_FILE);
 

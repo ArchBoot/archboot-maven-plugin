@@ -18,9 +18,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Template-method base for {@link ArchitectureProcessor} implementations.
+ *
+ * <p>It runs the common generation flow (structure, main class, resources, base files and
+ * optional {@code .gitkeep} files). Subclasses only provide the architecture-specific parts.</p>
+ *
+ */
 public abstract class ArchitectureProcessorAbstract implements ArchitectureProcessor {
+    /** Generator used to produce the {@code pom.xml}. */
     protected final PomGenerator pomGenerator = new PomGenerator();
 
+    /** {@inheritDoc} */
     @Override
     public void execute(ScaffoldModel scaffoldModel, File projectDir, Log log) throws MojoExecutionException {
         try {
@@ -50,14 +59,50 @@ public abstract class ArchitectureProcessorAbstract implements ArchitectureProce
         }
     }
 
+    /**
+     * Creates the architecture-specific structure (pom and packages).
+     *
+     * @param config     the scaffold model
+     * @param projectDir the project directory
+     * @param log        the Maven logger
+     * @throws IOException if a file or directory cannot be created
+     */
     protected abstract void buildStructure(ScaffoldModel config, File projectDir, Log log) throws IOException;
 
+    /**
+     * Resolves the directory where the main application class is generated.
+     *
+     * @param projectDir the project directory
+     * @param dataModel  the project data
+     * @return the main source directory
+     * @throws IOException if the directory cannot be resolved
+     */
     protected abstract File resolveMainSourceDir(File projectDir, DataModel dataModel) throws IOException;
 
+    /**
+     * Resolves the directory where the configuration file is generated.
+     *
+     * @param projectDir the project directory
+     * @param dataModel  the project data
+     * @return the resources directory
+     * @throws IOException if the directory cannot be resolved
+     */
     protected abstract File resolveResourcesDir(File projectDir, DataModel dataModel) throws IOException;
 
+    /**
+     * Returns a short label identifying the architecture variant, used in log messages.
+     *
+     * @return the variant label
+     */
     protected abstract String variantLabel();
 
+    /**
+     * Generates the Spring Boot main class from the {@code App.java} template.
+     *
+     * @param dataModel the project data
+     * @param srcDir    the directory where the class is written
+     * @throws IOException if the template cannot be processed
+     */
     protected void generateMainClass(DataModel dataModel, File srcDir) throws IOException {
         String className = Normalizer.normalize(
                 dataModel.getArtifactId(), NormalizationType.CLASS_NAME
@@ -74,6 +119,14 @@ public abstract class ArchitectureProcessorAbstract implements ArchitectureProce
         );
     }
 
+    /**
+     * Generates the application configuration resource file ({@code application.yml}
+     * or {@code application.properties}, depending on {@link DataModel}'s config extension).
+     *
+     * @param dataModel    the project data model
+     * @param resourcesDir the directory where the resource file will be written
+     * @throws IOException if the template could not be processed or the file written
+     */
     protected void generateResources(DataModel dataModel, File resourcesDir) throws IOException {
 
         String configFile = ConstantsPlugin.YML.equalsIgnoreCase(dataModel.getConfig().getExtension().name())
@@ -89,6 +142,15 @@ public abstract class ArchitectureProcessorAbstract implements ArchitectureProce
         );
     }
 
+    /**
+     * Generates the base files: {@code .gitignore}, {@code .gitattributes}, Maven wrapper
+     * scripts and properties, and {@code README.md}.
+     *
+     * @param projectDir the project directory
+     * @param dataModel  the project data
+     * @param log        the Maven logger
+     * @throws IOException if a file cannot be generated
+     */
     protected void generateItemsBasic(File projectDir, DataModel dataModel, Log log) throws IOException {
         log.info("  > [Processor] Generating .gitignore...");
         RawGenerator.copy(ConstantsPlugin.GITIGNORE_RAW_SHARED, new File(projectDir, ConstantsPlugin.DOT_GITIGNORE));
@@ -116,6 +178,12 @@ public abstract class ArchitectureProcessorAbstract implements ArchitectureProce
         );
     }
 
+    /**
+     * Creates a {@code .gitkeep} file in every empty leaf directory under the given one.
+     *
+     * @param projectDir the root directory to scan
+     * @param log        the Maven logger
+     */
     protected void generateGitKeep(File projectDir, Log log) {
         generateGitKeepRecursive(projectDir, log);
     }
@@ -167,6 +235,13 @@ public abstract class ArchitectureProcessorAbstract implements ArchitectureProce
         }
     }
 
+    /**
+     * Creates the given packages (directories) under a base directory.
+     *
+     * @param base     the base directory
+     * @param packages the package names to create
+     * @param log      the Maven logger
+     */
     protected void createPackages(File base, List<String> packages, Log log) {
         for (String pkg : packages) {
             log.info("  > [Processor] Creating package " + pkg);
