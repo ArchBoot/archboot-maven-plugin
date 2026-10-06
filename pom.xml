@@ -10,6 +10,7 @@
     <packaging>maven-plugin</packaging>
     <name>ArchBoot Maven Plugin</name>
     <description>Reusable Maven Plugin fot Spring Boot Maven projects</description>
+    <url>https://github.com/ArchBoot/archboot-maven-plugin</url>
 
     <licenses>
         <license>
