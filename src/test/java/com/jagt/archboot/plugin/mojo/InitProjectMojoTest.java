@@ -10,6 +10,8 @@ import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -321,34 +323,19 @@ class InitProjectMojoTest {
                 .hasMessageContaining("Invalid Java version");
     }
 
-    @Test
-    void invalidSpringBootVersion(@TempDir File tempDir) {
-        mojo.setSpringVersion("2.0.0");
+    @ParameterizedTest
+    @CsvSource({
+            "2.0.0, Spring Boot version not supported",
+            "1, Invalid Spring Boot version",
+            "s.0.0, Invalid Spring Boot version"
+            })
+    void invalidSpringBootVersion(String springVersion, String expectedMessage, @TempDir File tempDir) {
+        mojo.setSpringVersion(springVersion);
         mojo.setOutputDir(tempDir);
 
         assertThatThrownBy(() -> mojo.execute())
                 .isInstanceOf(MojoExecutionException.class)
-                .hasMessageContaining("Spring Boot version not supported");
-    }
-
-    @Test
-    void invalidSpringBootVersion2(@TempDir File tempDir) {
-        mojo.setSpringVersion("1");
-        mojo.setOutputDir(tempDir);
-
-        assertThatThrownBy(() -> mojo.execute())
-                .isInstanceOf(MojoExecutionException.class)
-                .hasMessageContaining("Invalid Spring Boot version");
-    }
-
-    @Test
-    void invalidSpringBootVersion3(@TempDir File tempDir) {
-        mojo.setSpringVersion("s.0.0");
-        mojo.setOutputDir(tempDir);
-
-        assertThatThrownBy(() -> mojo.execute())
-                .isInstanceOf(MojoExecutionException.class)
-                .hasMessageContaining("Invalid Spring Boot version");
+                .hasMessageContaining(expectedMessage);
     }
 
 }
