@@ -301,4 +301,54 @@ class InitProjectMojoTest {
                 .contains("groupId: com.example");
     }
 
+    @Test
+    void invalidJavaVersion(@TempDir File tempDir) throws Exception {
+        mojo.setJavaVersion("11");
+        mojo.setOutputDir(tempDir);
+
+        assertThatThrownBy(() -> mojo.execute())
+                .isInstanceOf(MojoExecutionException.class)
+                .hasMessageContaining("Java version not supported");
+    }
+
+    @Test
+    void invalidJavaVersionParse(@TempDir File tempDir) throws Exception {
+        mojo.setJavaVersion("1.8");
+        mojo.setOutputDir(tempDir);
+
+        assertThatThrownBy(() -> mojo.execute())
+                .isInstanceOf(MojoExecutionException.class)
+                .hasMessageContaining("Invalid Java version");
+    }
+
+    @Test
+    void invalidSpringBootVersion(@TempDir File tempDir) throws Exception {
+        mojo.setSpringVersion("2.0.0");
+        mojo.setOutputDir(tempDir);
+
+        assertThatThrownBy(() -> mojo.execute())
+                .isInstanceOf(MojoExecutionException.class)
+                .hasMessageContaining("Spring Boot version not supported");
+    }
+
+    @Test
+    void invalidSpringBootVersion2(@TempDir File tempDir) throws Exception {
+        mojo.setSpringVersion("1");
+        mojo.setOutputDir(tempDir);
+
+        assertThatThrownBy(() -> mojo.execute())
+                .isInstanceOf(MojoExecutionException.class)
+                .hasMessageContaining("Invalid Spring Boot version");
+    }
+
+    @Test
+    void invalidSpringBootVersion3(@TempDir File tempDir) throws Exception {
+        mojo.setSpringVersion("s.0.0");
+        mojo.setOutputDir(tempDir);
+
+        assertThatThrownBy(() -> mojo.execute())
+                .isInstanceOf(MojoExecutionException.class)
+                .hasMessageContaining("Invalid Spring Boot version");
+    }
+
 }

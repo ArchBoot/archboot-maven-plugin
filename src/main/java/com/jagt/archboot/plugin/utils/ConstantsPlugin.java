@@ -4,7 +4,8 @@ public class ConstantsPlugin {
     private ConstantsPlugin() {}
 
     public static final String CLASSPATH_SEPARATOR = "/";
-
+    public static final Integer JAVA_VERSION_SUPPORTED = 17;
+    public static final Integer SPRING_VERSION_SUPPORTED = 4;
 
     public static final String ARTIFACT_ID = "artifactId";
     public static final String GROUP_ID = "groupId";

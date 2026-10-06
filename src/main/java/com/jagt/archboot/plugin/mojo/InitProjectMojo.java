@@ -63,6 +63,7 @@ public class InitProjectMojo extends InitProjectAbstractMojo {
         File projectDir = validateOutputDir();
 
         ScaffoldModel scaffold = generateScaffoldModel(architectureType, configuration);
+        validateVersions(scaffold);
         generateScaffoldYaml(scaffold, projectDir);
 
         ArchitectureProcessor processor = ArchitectureProcessorFactory.get(architectureType);
@@ -174,6 +175,46 @@ public class InitProjectMojo extends InitProjectAbstractMojo {
             YamlReader.write(scaffoldModel, projectDir);
         } catch (IOException e) {
             throw new MojoExecutionException("[ERROR] Error creating project: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Validates the Java's and Spring Boot's versions in the scaffold model.
+     *
+     * @param scaffoldModel the model to serialize
+     * @throws MojoExecutionException if the version is invalid
+     */
+    private void validateVersions(ScaffoldModel scaffoldModel) throws MojoExecutionException {
+        String javaVersion = scaffoldModel.getData().getConfig().getJavaVersion();
+        String springBootVersion = scaffoldModel.getData().getConfig().getSpringBootVersion();
+
+        try {
+            getLog().info("> [Mojo] Checking Java's version is supported...");
+            int javaIntVersion = Integer.parseInt(javaVersion);
+
+            if (ConstantsPlugin.JAVA_VERSION_SUPPORTED > javaIntVersion) {
+                throw new MojoExecutionException("[ERROR] Java version not supported: " + javaVersion);
+            }
+        } catch (NumberFormatException e) {
+            throw new MojoExecutionException("[ERROR] Invalid Java version: " + javaVersion);
+        }
+
+
+        try {
+            getLog().info("> [Mojo] Checking Spring Boot's version is supported...");
+            String[] versionParts = springBootVersion.split("\\.");
+
+            if (versionParts.length < 2) {
+                throw new MojoExecutionException("[ERROR] Invalid Spring Boot version: " + springBootVersion);
+            }
+
+            int springBootMajorVersion = Integer.parseInt(versionParts[0]);
+
+            if (ConstantsPlugin.SPRING_VERSION_SUPPORTED > springBootMajorVersion) {
+                throw new MojoExecutionException("[ERROR] Spring Boot version not supported: " + springBootVersion);
+            }
+        } catch (NumberFormatException e) {
+            throw new MojoExecutionException("[ERROR] Invalid Spring Boot version: " + springBootVersion);
         }
     }
 }
