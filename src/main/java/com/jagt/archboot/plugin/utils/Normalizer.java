@@ -62,7 +62,7 @@ public class Normalizer {
                 .replaceAll("\\s+", "-")
                 .replaceAll("[^a-z0-9-]", "-")
                 .replaceAll("-{2,}", "-")
-                .replaceAll("^-|-$", "");
+                .replaceAll("(^-)|(-$)", "");
 
         return value.isBlank() ? "app" : value;
     }
@@ -81,7 +81,7 @@ public class Normalizer {
                 .replace("-", "_")
                 .replaceAll("[^a-z0-9._]", ".")
                 .replaceAll("\\.+", ".")
-                .replaceAll("^\\.|\\.$", "");
+                .replaceAll("(^\\.)|(\\.$)", "");
 
         String[] parts = value.split("\\.");
         for (int i = 0; i < parts.length; i++) {
