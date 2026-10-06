@@ -133,7 +133,7 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>com.jagt.archboot.plugin</groupId>
+                <groupId>top.jagt.archboot.plugin</groupId>
                 <artifactId>archboot-maven-plugin</artifactId>
                 <version>0.1.0</version>
             </plugin>

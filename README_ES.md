@@ -4,7 +4,7 @@
 
 **Genera esqueletos de proyectos Spring Boot desde la línea de comandos, organizados por arquitectura.**
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.jagt.archboot.plugin/archboot-maven-plugin?logo=apachemaven&label=Maven%20Central)](https://central.sonatype.com/artifact/com.jagt.archboot.plugin/archboot-maven-plugin)
+[![Maven Central](https://img.shields.io/maven-central/v/top.jagt.archboot.plugin/archboot-maven-plugin?logo=apachemaven&label=Maven%20Central)](https://central.sonatype.com/artifact/top.jagt.archboot.plugin/archboot-maven-plugin)
 [![GitHub Tag](https://img.shields.io/github/v/tag/ArchBoot/archboot-maven-plugin?sort=semver&logo=git&label=Version)](https://github.com/ArchBoot/archboot-maven-plugin/tags)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 [![Java](https://img.shields.io/badge/Java-17%2B-orange?logo=openjdk&logoColor=white)](https://adoptium.net/)
@@ -40,7 +40,7 @@ ArchBoot es un plugin de Maven que crea un proyecto Spring Boot listo para ejecu
 ## Coordenadas del plugin
 
 ```xml
-<groupId>com.jagt.archboot.plugin</groupId>
+<groupId>top.jagt.archboot.plugin</groupId>
 <artifactId>archboot-maven-plugin</artifactId>
 <version>0.1.0</version>
 ```
@@ -70,7 +70,7 @@ Hay dos formas de ejecutar el plugin.
 No requiere instalación. Maven descarga el plugin la primera vez que se usa.
 
 ```bash
-mvn com.jagt.archboot.plugin:archboot-maven-plugin:0.1.0:init \
+mvn top.jagt.archboot.plugin:archboot-maven-plugin:0.1.0:init \
     -DgroupId=com.example \
     -DartifactId=my-app \
     -Darchitecture=mvc
@@ -81,7 +81,7 @@ mvn com.jagt.archboot.plugin:archboot-maven-plugin:0.1.0:init \
 ```xml
 <settings>
   <pluginGroups>
-    <pluginGroup>com.jagt.archboot.plugin</pluginGroup>
+    <pluginGroup>top.jagt.archboot.plugin</pluginGroup>
   </pluginGroups>
 </settings>
 ```
@@ -111,7 +111,7 @@ mvnw.cmd clean install      # Windows
 **3. Ejecutar el goal** con la versión que acabas de instalar (`0.1.0-SNAPSHOT`):
 
 ```bash
-mvn com.jagt.archboot.plugin:archboot-maven-plugin:0.1.0-SNAPSHOT:init \
+mvn top.jagt.archboot.plugin:archboot-maven-plugin:0.1.0-SNAPSHOT:init \
     -DgroupId=com.example \
     -DartifactId=my-app \
     -Darchitecture=mvc \
