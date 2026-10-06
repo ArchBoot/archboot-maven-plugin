@@ -302,7 +302,7 @@ class InitProjectMojoTest {
     }
 
     @Test
-    void invalidJavaVersion(@TempDir File tempDir) throws Exception {
+    void invalidJavaVersion(@TempDir File tempDir) {
         mojo.setJavaVersion("11");
         mojo.setOutputDir(tempDir);
 
@@ -312,7 +312,7 @@ class InitProjectMojoTest {
     }
 
     @Test
-    void invalidJavaVersionParse(@TempDir File tempDir) throws Exception {
+    void invalidJavaVersionParse(@TempDir File tempDir) {
         mojo.setJavaVersion("1.8");
         mojo.setOutputDir(tempDir);
 
@@ -322,7 +322,7 @@ class InitProjectMojoTest {
     }
 
     @Test
-    void invalidSpringBootVersion(@TempDir File tempDir) throws Exception {
+    void invalidSpringBootVersion(@TempDir File tempDir) {
         mojo.setSpringVersion("2.0.0");
         mojo.setOutputDir(tempDir);
 
@@ -332,7 +332,7 @@ class InitProjectMojoTest {
     }
 
     @Test
-    void invalidSpringBootVersion2(@TempDir File tempDir) throws Exception {
+    void invalidSpringBootVersion2(@TempDir File tempDir) {
         mojo.setSpringVersion("1");
         mojo.setOutputDir(tempDir);
 
@@ -342,7 +342,7 @@ class InitProjectMojoTest {
     }
 
     @Test
-    void invalidSpringBootVersion3(@TempDir File tempDir) throws Exception {
+    void invalidSpringBootVersion3(@TempDir File tempDir) {
         mojo.setSpringVersion("s.0.0");
         mojo.setOutputDir(tempDir);
 
