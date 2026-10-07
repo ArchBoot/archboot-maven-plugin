@@ -6,11 +6,11 @@ Genera el esqueleto de un nuevo proyecto Spring Boot para la arquitectura elegid
 
 | Atributo          | Valor                                                 |
 |-------------------|-------------------------------------------------------|
-| Nombre completo   | `com.jagt.archboot.plugin:archboot-maven-plugin:init` |
+| Nombre completo   | `top.jagt.archboot.plugin:archboot-maven-plugin:init` |
 | Nombre corto      | `archboot:init`                                       |
 | Desde             | 0.1.0                                                 |
 | Requiere proyecto | No (`requiresProject = false`)                        |
-| Implementación    | `com.jagt.archboot.plugin.mojo.InitProjectMojo`       |
+| Implementación    | `top.jagt.archboot.plugin.mojo.InitProjectMojo`       |
 
 ## Tabla de contenido
 
@@ -28,7 +28,7 @@ Genera el esqueleto de un nuevo proyecto Spring Boot para la arquitectura elegid
 ## Uso
 
 ```bash
-mvn com.jagt.archboot.plugin:archboot-maven-plugin:0.1.0:init \
+mvn top.jagt.archboot.plugin:archboot-maven-plugin:0.1.0:init \
     -DgroupId=<groupId> \
     -DartifactId=<artifactId> \
     -Darchitecture=<architecture> \

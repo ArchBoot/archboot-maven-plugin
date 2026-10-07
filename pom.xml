@@ -3,13 +3,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.jagt.archboot.plugin</groupId>
+    <groupId>top.jagt.archboot.plugin</groupId>
     <artifactId>archboot-maven-plugin</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 
     <packaging>maven-plugin</packaging>
     <name>ArchBoot Maven Plugin</name>
     <description>Reusable Maven Plugin fot Spring Boot Maven projects</description>
+    <url>https://github.com/ArchBoot/archboot-maven-plugin</url>
 
     <licenses>
         <license>
@@ -144,7 +145,7 @@
                 <version>3.11.2</version>
                 <configuration>
                     <doclint>none</doclint>
-                    <excludePackageNames>com.jagt.archboot.plugin.model.*</excludePackageNames>
+                    <excludePackageNames>top.jagt.archboot.plugin.model.*</excludePackageNames>
                 </configuration>
                 <executions>
                     <execution>
