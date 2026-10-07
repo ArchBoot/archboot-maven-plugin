@@ -6,6 +6,7 @@ import top.jagt.archboot.plugin.model.DataModel;
 import top.jagt.archboot.plugin.model.ScaffoldModel;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
+import top.jagt.archboot.plugin.model.enums.ConfigApplicationType;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -88,9 +89,12 @@ public class YamlReader {
         if (configModel == null) {
             return map();
         }
+
+        ConfigApplicationType extension = configModel.getExtension();
         return map(
                 ConstantsPlugin.CONFIG, map(
-                        ConstantsPlugin.EXTENSION, configModel.getExtension()
+                        ConstantsPlugin.EXTENSION,
+                        extension == null ? null : extension.name()
                 )
         );
     }
