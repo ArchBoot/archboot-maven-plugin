@@ -9,6 +9,12 @@ El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/
 ## [Unreleased]
 
 ---
+## [0.1.1] - 2026-10-06
+
+### Corregido
+- Se ha corregido un problema en el objetivo `archboot:init` al generar el descriptor `scaffold.yml`. El parámetro `configuration` se serializaba incorrectamente utilizando la representación `Enum` de Java, lo que daba lugar a un valor no válido que incluía la ruta de la clase del enum. Ahora, el parámetro se guarda correctamente como la cadena de texto correspondiente a su formato de configuración (por ejemplo, `yml` o `properties`).
+
+---
 ## [0.1.0] - 2026-10-06
 
 ### Añadido
@@ -34,3 +40,4 @@ y agrega arriba una nueva sección [Unreleased] vacía.
 
 [Unreleased]: https://github.com/ArchBoot/archboot-maven-plugin/commits/develop
 [0.1.0]: https://github.com/ArchBoot/archboot-maven-plugin/commits/0.1.0
+[0.1.1]: https://github.com/ArchBoot/archboot-maven-plugin/commits/0.1.1
