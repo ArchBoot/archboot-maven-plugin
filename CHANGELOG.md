@@ -9,6 +9,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ## [Unreleased]
 
 ---
+## [0.1.1] - 2026-10-06
+
+### Fixed
+- Fixed an issue in the `archboot:init` goal when generating the `scaffold.yml` descriptor. The `configuration` parameter was incorrectly serialized using the Java `Enum` representation, resulting in an invalid value containing the enum class path. The parameter is now correctly persisted as its corresponding configuration format string (for example, `yml` or `properties`).
+
+---
 ## [0.1.0] - 2026-10-06
 
 ### Added
@@ -30,3 +36,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 [Unreleased]: https://github.com/ArchBoot/archboot-maven-plugin/commits/develop
 [0.1.0]: https://github.com/ArchBoot/archboot-maven-plugin/commits/0.1.0
+[0.1.1]: https://github.com/ArchBoot/archboot-maven-plugin/commits/0.1.1
