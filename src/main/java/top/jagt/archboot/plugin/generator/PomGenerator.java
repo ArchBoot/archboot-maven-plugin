@@ -31,6 +31,14 @@ public class PomGenerator {
         );
     }
 
+    /**
+     * Generates the parent {@code pom.xml} for a hexagonal modular project.
+     *
+     * @param scaffold   the scaffold model providing the template data
+     * @param projectDir the project directory
+     * @param modules    the list of module definitions
+     * @throws IOException if the template cannot be processed or the file written
+     */
     public void generateParent(ScaffoldModel scaffold, File projectDir, List<ModuleDefinitionModel> modules) throws IOException {
         DataModel dataModel = scaffold.getData();
 
@@ -44,6 +52,14 @@ public class PomGenerator {
         );
     }
 
+    /**
+     * Generates a module-specific {@code pom.xml} file.
+     *
+     * @param scaffold   the scaffold model providing the template data
+     * @param projectDir the project directory
+     * @param templatePath the path to the FreeMarker template
+     * @throws IOException if the template cannot be processed or the file written
+     */
     public void generateModulePom(ScaffoldModel scaffold, File projectDir, String templatePath) throws IOException {
         FreeMarkerGenerator.generate(
                 templatePath,
