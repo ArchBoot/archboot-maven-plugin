@@ -4,9 +4,17 @@ import top.jagt.archboot.plugin.model.ModuleDefinitionModel;
 
 import java.util.List;
 
+/**
+ * Utility class that provides predefined module layouts for different architecture types.
+ */
 public class ModuleLayout {
     private ModuleLayout() {}
 
+    /**
+     * Returns the predefined module layout for the hexagonal architecture.
+     *
+     * @return the list of module definitions
+     */
     public static List<ModuleDefinitionModel> hexagonal() {
         return List.of(
                 ModuleDefinitionModel.builder()
