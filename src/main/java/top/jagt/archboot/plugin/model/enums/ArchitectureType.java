@@ -7,7 +7,9 @@ import top.jagt.archboot.plugin.utils.Normalizer;
  */
 public enum ArchitectureType {
     /** Traditional Model-View-Controller layered architecture. */
-    MVC;
+    MVC,
+    /** Hexagonal with modules layered architecture **/
+    HEXAGONAL_MODULAR;
 
     /**
      * Resolve an {@link ArchitectureType} from a string value.

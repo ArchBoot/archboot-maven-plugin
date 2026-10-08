@@ -1,13 +1,16 @@
 package top.jagt.archboot.plugin.generator;
 
 import top.jagt.archboot.plugin.model.DataModel;
+import top.jagt.archboot.plugin.model.ModuleDefinitionModel;
 import top.jagt.archboot.plugin.model.ScaffoldModel;
 import top.jagt.archboot.plugin.utils.ConstantsPlugin;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Generates the {@code pom.xml} of the new project from the shared FreeMarker template.
@@ -23,6 +26,27 @@ public class PomGenerator {
     public void generateStandard(ScaffoldModel scaffold, File projectDir) throws IOException {
         FreeMarkerGenerator.generate(
                 ConstantsPlugin.POM_SHARED,
+                buildBaseModel(scaffold.getData()),
+                new File(projectDir, ConstantsPlugin.POM_XML)
+        );
+    }
+
+    public void generateParent(ScaffoldModel scaffold, File projectDir, List<ModuleDefinitionModel> modules) throws IOException {
+        DataModel dataModel = scaffold.getData();
+
+        Map<String, Object> model = buildBaseModel(dataModel);
+        model.put(ConstantsPlugin.MODULES, modules.stream()
+                .map(m -> dataModel.getArtifactId() + "-" + m.getSuffix())
+                .collect(Collectors.toList()));
+
+        FreeMarkerGenerator.generate(
+            ConstantsPlugin.POM_PARENT_HEXAGONAL, model, new File(projectDir, ConstantsPlugin.POM_XML)
+        );
+    }
+
+    public void generateModulePom(ScaffoldModel scaffold, File projectDir, String templatePath) throws IOException {
+        FreeMarkerGenerator.generate(
+                templatePath,
                 buildBaseModel(scaffold.getData()),
                 new File(projectDir, ConstantsPlugin.POM_XML)
         );

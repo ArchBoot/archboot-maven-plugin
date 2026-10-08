@@ -338,4 +338,27 @@ class InitProjectMojoTest {
                 .hasMessageContaining(expectedMessage);
     }
 
+    @Test
+    void generatesHexagonalModular_happyPath(@TempDir File tempDir) throws Exception {
+        mojo.setOutputDir(tempDir);
+        mojo.setArchitecture("hexagonal-modular");
+
+        mojo.execute();
+
+        File projectDir = new File(tempDir, "my-app");
+
+        File scaffold = new File(projectDir, "scaffold.yml");
+
+        assertThat(projectDir).exists().isDirectory();
+
+        assertThat(scaffold).exists().isFile();
+
+        String content = Files.readString(scaffold.toPath());
+
+        assertThat(content)
+                .contains("architecture: HEXAGONAL_MODULAR")
+                .contains("artifactId: my-app")
+                .contains("groupId: com.example");
+    }
+
 }

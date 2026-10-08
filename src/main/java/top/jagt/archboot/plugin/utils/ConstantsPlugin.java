@@ -27,6 +27,7 @@ public class ConstantsPlugin {
     public static final String FALSE = "false";
     public static final String OUTPUT = "output";
     public static final String USER_DIR = "user.dir";
+    public static final String MODULES = "modules";
 
     public static final String SCAFFOLD_FILE = "scaffold.yml";
     public static final String SCAFFOLD = "scaffold";
@@ -65,6 +66,15 @@ public class ConstantsPlugin {
     public static final String MVNW_PROPERTIES_RAW_SHARED = SHARED + CLASSPATH_SEPARATOR + MVNW_PROPERTIES + DOT_RAW;
     public static final String MVNW_PROPERTIES_FIELD = DOT_MVN + CLASSPATH_SEPARATOR + WRAPPER + CLASSPATH_SEPARATOR + MVNW_PROPERTIES;
 
+    public static final String DOMAIN = "domain";
+    public static final String APPLICATION = "application";
+    public static final String INFRASTRUCTURE = "infrastructure";
+    public static final String HEXAGONAL = "hexagonal";
+    public static final String POM_PARENT_HEXAGONAL = HEXAGONAL + CLASSPATH_SEPARATOR + POM_XML + DOT_FTL;
+    public static final String POM_DOMAIN_HEXAGONAL = HEXAGONAL + CLASSPATH_SEPARATOR + DOMAIN + CLASSPATH_SEPARATOR + POM_XML + DOT_FTL;
+    public static final String POM_APPLICATION_HEXAGONAL = HEXAGONAL + CLASSPATH_SEPARATOR + APPLICATION + CLASSPATH_SEPARATOR + POM_XML + DOT_FTL;
+    public static final String POM_INFRASTRUCTURE_HEXAGONAL = HEXAGONAL + CLASSPATH_SEPARATOR + INFRASTRUCTURE + CLASSPATH_SEPARATOR + POM_XML + DOT_FTL;
+
 
     public static final String SRC = "src";
     public static final String MAIN = "main";
@@ -79,5 +89,11 @@ public class ConstantsPlugin {
     public static final String SERVICE = "service";
     public static final String CONTROLLER = "controller";
     public static final String REPOSITORY = "repository";
+
+    public static final String GATEWAY = "gateway";
+    public static final String EXCEPTION = "exception";
+    public static final String USECASE = "usecase";
+    public static final String HANDLER = "handler";
+    public static final String INPUT = "input";
 
 }
