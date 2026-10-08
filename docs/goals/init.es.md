@@ -60,12 +60,12 @@ Los parámetros se pasan con `-D<propiedad>=<valor>`.
 
 ### Configuración
 
-| Parámetro           | Propiedad       | Tipo    | Obligatorio | Por defecto | Descripción                                                         |
-|---------------------|-----------------|---------|-------------|-------------|-------------- -------------------------------------------------------|
-| `javaVersion`       | `javaVersion`   | String  | No          | `17`        | Versión de Java del proyecto generado.                              |
-| `springVersion`     | `springVersion` | String  | No          | `4.0.0`     | Versión de Spring Boot del proyecto generado.                       |
+| Parámetro           | Propiedad       | Tipo    | Obligatorio | Por defecto | Descripción                                                                                     |
+|---------------------|-----------------|---------|-------------|-------------|-------------------------------------------------------------------------------------------------|
+| `javaVersion`       | `javaVersion`   | String  | No          | `17`        | Versión de Java del proyecto generado.                                                          |
+| `springVersion`     | `springVersion` | String  | No          | `4.0.0`     | Versión de Spring Boot del proyecto generado.                                                   |
 | `configurationType` | `configuration` | String  | No          | `yml`       | Formato del archivo de configuración. Ver el [catálogo](#valores-del-archivo-de-configuración). |
-| `gitKeep`           | `gitKeep`       | boolean | No          | `false`     | Crea archivos `.gitkeep` en los directorios vacíos.                 |
+| `gitKeep`           | `gitKeep`       | boolean | No          | `false`     | Crea archivos `.gitkeep` en los directorios vacíos.                                             |
 
 > [!NOTE]
 > `configurationType` se define con la propiedad **`configuration`**: `-Dconfiguration=properties`.
@@ -113,13 +113,13 @@ Si ambos están activos, el `pom.xml` generado agrega también `lombok-mapstruct
 
 ## Reglas de normalización
 
-| Entrada       | Regla                                                                                                             | Ejemplo                                    |
-|---------------|-------------------------------------------------------------------------------------------------------------------|--------------------------------------------|
-| `artifactId`  | camelCase y separadores pasan a kebab-case, en minúsculas, y los caracteres inválidos pasan a `-`. Si queda vacío, usa `app`. | `My Awesome App` → `my-awesome-app` |
-| `name`        | Si está en blanco, usa el `artifactId` tal como se indicó (antes de normalizar).                                  | `MyApp` → `MyApp`                          |
-| `packageName` | Si está en blanco, se construye con `groupId.artifactId`: minúsculas, `-` pasa a `_`, las palabras reservadas de Java reciben `_` al final y los segmentos que empiezan con dígito reciben `_` al inicio. | `com.example` + `my-app` → `com.example.my_app` |
-| Clase principal | PascalCase del `artifactId` más el sufijo `Application`. Se antepone `App` si queda vacío o empieza con dígito. | `my-app` → `MyAppApplication`            |
-| `architecture`, `configuration` | Se pasan a mayúsculas, `-` y espacios pasan a `_`, y luego se comparan con el enum.             | `mvc` → `MVC`                              |
+| Entrada                         | Regla                                                                                                                                                                                                     | Ejemplo                                         |
+|---------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------|
+| `artifactId`                    | camelCase y separadores pasan a kebab-case, en minúsculas, y los caracteres inválidos pasan a `-`. Si queda vacío, usa `app`.                                                                             | `My Awesome App` → `my-awesome-app`             |
+| `name`                          | Si está en blanco, usa el `artifactId` tal como se indicó (antes de normalizar).                                                                                                                          | `MyApp` → `MyApp`                               |
+| `packageName`                   | Si está en blanco, se construye con `groupId.artifactId`: minúsculas, `-` pasa a `_`, las palabras reservadas de Java reciben `_` al final y los segmentos que empiezan con dígito reciben `_` al inicio. | `com.example` + `my-app` → `com.example.my_app` |
+| Clase principal                 | PascalCase del `artifactId` más el sufijo `Application`. Se antepone `App` si queda vacío o empieza con dígito.                                                                                           | `my-app` → `MyAppApplication`                   |
+| `architecture`, `configuration` | Se pasan a mayúsculas, `-` y espacios pasan a `_`, y luego se comparan con el enum.                                                                                                                       | `mvc` → `MVC`                                   |
 
 Un `packageName` explícito se conserva tal cual.
 
@@ -164,16 +164,16 @@ Monolito en capas tradicional: controller → service → repository → model.
 
 **Archivos generados**
 
-| Archivo                                | Contenido                                                                                 |
-|----------------------------------------|-------------------------------------------------------------------------------------------|
-| `pom.xml`                              | Parent de Spring Boot, dependencias (abajo), plugins de compilación y de Spring Boot.     |
-| `<NombreClase>Application.java`        | Punto de entrada `@SpringBootApplication`. Carga un archivo `.env` (si existe) en las propiedades del sistema antes de arrancar. |
-| `application.yml` / `.properties`      | Define `spring.application.name` con el `name` del proyecto.                              |
-| `.gitignore`, `.gitattributes`         | Reglas de ignorado para Maven, IDEs y `.env`; reglas de fin de línea para `mvnw` y `*.cmd`. |
-| `mvnw`, `mvnw.cmd`, `.mvn/wrapper/…`   | Maven Wrapper (Maven 3.9.10).                                                             |
-| `README.md`                            | Título con el `name` del proyecto.                                                        |
-| `scaffold.yml`                         | Descripción de las entradas de generación.                                                |
-| `.gitkeep`                             | Solo con `gitKeep=true`, en cada directorio hoja vacío.                                   |
+| Archivo                              | Contenido                                                                                                                        |
+|--------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| `pom.xml`                            | Parent de Spring Boot, dependencias (abajo), plugins de compilación y de Spring Boot.                                            |
+| `<NombreClase>Application.java`      | Punto de entrada `@SpringBootApplication`. Carga un archivo `.env` (si existe) en las propiedades del sistema antes de arrancar. |
+| `application.yml` / `.properties`    | Define `spring.application.name` con el `name` del proyecto.                                                                     |
+| `.gitignore`, `.gitattributes`       | Reglas de ignorado para Maven, IDEs y `.env`; reglas de fin de línea para `mvnw` y `*.cmd`.                                      |
+| `mvnw`, `mvnw.cmd`, `.mvn/wrapper/…` | Maven Wrapper (Maven 3.9.10).                                                                                                    |
+| `README.md`                          | Título con el `name` del proyecto.                                                                                               |
+| `scaffold.yml`                       | Descripción de las entradas de generación.                                                                                       |
+| `.gitkeep`                           | Solo con `gitKeep=true`, en cada directorio hoja vacío.                                                                          |
 
 **Dependencias generadas**
 
@@ -209,13 +209,13 @@ scaffold:
 
 ## Errores
 
-| Mensaje                                         | Causa                                                       |
-|-------------------------------------------------|-------------------------------------------------------------|
-| `Invalid architecture type: <valor>`            | `architecture` no está en el [catálogo](#valores-de-arquitectura). |
-| `Invalid configuration type: <valor>`           | `configuration` no es `yml` ni `properties`.                |
-| `Output directory already exists: <ruta>`       | `<output>/<artifactId>` ya existe. No se sobrescribe nada.  |
-| `Failed to create output directory: <ruta>`     | No se pudo crear el directorio (permisos, ruta inválida).   |
-| `Error creating project: <detalle>`             | No se pudo escribir `scaffold.yml`.                         |
+| Mensaje                                     | Causa                                                                |
+|---------------------------------------------|----------------------------------------------------------------------|
+| `Invalid architecture type: <valor>`        | `architecture` no está en el [catálogo](#valores-de-arquitectura).   |
+| `Invalid configuration type: <valor>`       | `configuration` no es `yml` ni `properties`.                         |
+| `Output directory already exists: <ruta>`   | `<output>/<artifactId>` ya existe. No se sobrescribe nada.           |
+| `Failed to create output directory: <ruta>` | No se pudo crear el directorio (permisos, ruta inválida).            |
+| `Error creating project: <detalle>`         | No se pudo escribir `scaffold.yml`.                                  |
 
 ## Ejemplos
 

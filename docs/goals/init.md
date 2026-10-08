@@ -21,6 +21,7 @@ Generates a new Spring Boot project skeleton for the chosen architecture.
 - [Normalization rules](#normalization-rules)
 - [Architectures](#architectures)
     - [`mvc`](#mvc)
+    - [`hexagonal_modular`](#hexagonal_modular)
 - [The `scaffold.yml` file](#the-scaffoldyml-file)
 - [Errors](#errors)
 - [Examples](#examples)
@@ -92,9 +93,10 @@ When both are enabled, the generated `pom.xml` also adds `lombok-mapstruct-bindi
 
 ### Architecture values
 
-| Value (case-insensitive) | Architecture              | Status    | Details        |
-|--------------------------|---------------------------|-----------|----------------|
-| `mvc`                    | MVC layered monolith      | Available | [`mvc`](#mvc)  |
+| Value (case-insensitive) | Architecture               | Status      | Details                                   |
+|--------------------------|----------------------------|-------------|-------------------------------------------|
+| `mvc`                    | MVC layered monolith       | Available   | [`mvc`](#mvc)                             |
+| `hexagonal_modular`      | Hexagonal modular monolith | Available   | [`hexagonal_modular`](#hexagonal_modular) |
 
 ### Configuration file values
 
@@ -164,28 +166,28 @@ Traditional layered monolith: controller → service → repository → model.
 
 **Generated files**
 
-| File                                   | Content                                                                                   |
-|----------------------------------------|-------------------------------------------------------------------------------------------|
-| `pom.xml`                              | Spring Boot parent, dependencies (below), compiler and Spring Boot plugins.               |
-| `<ClassName>Application.java`          | `@SpringBootApplication` entry point. Loads a `.env` file (if present) into system properties before starting. |
-| `application.yml` / `.properties`      | Sets `spring.application.name` to the project `name`.                                     |
-| `.gitignore`, `.gitattributes`         | Ignore rules for Maven, IDEs and `.env`; line-ending rules for `mvnw` and `*.cmd`.        |
-| `mvnw`, `mvnw.cmd`, `.mvn/wrapper/…`   | Maven Wrapper (Maven 3.9.10).                                                             |
-| `README.md`                            | Title with the project `name`.                                                            |
-| `scaffold.yml`                         | Description of the generation inputs.                                                     |
-| `.gitkeep`                             | Only when `gitKeep=true`, in every empty leaf directory.                                  |
+| File                                 | Content                                                                                                        |
+|--------------------------------------|----------------------------------------------------------------------------------------------------------------|
+| `pom.xml`                            | Spring Boot parent, dependencies (below), compiler and Spring Boot plugins.                                    |
+| `<ClassName>Application.java`        | `@SpringBootApplication` entry point. Loads a `.env` file (if present) into system properties before starting. |
+| `application.yml` / `.properties`    | Sets `spring.application.name` to the project `name`.                                                          |
+| `.gitignore`, `.gitattributes`       | Ignore rules for Maven, IDEs and `.env`; line-ending rules for `mvnw` and `*.cmd`.                             |
+| `mvnw`, `mvnw.cmd`, `.mvn/wrapper/…` | Maven Wrapper (Maven 3.9.10).                                                                                  |
+| `README.md`                          | Title with the project `name`.                                                                                 |
+| `scaffold.yml`                       | Description of the generation inputs.                                                                          |
+| `.gitkeep`                           | Only when `gitKeep=true`, in every empty leaf directory.                                                       |
 
 **Generated dependencies**
 
-| Dependency                                   | Condition       |
-|----------------------------------------------|-----------------|
-| `spring-boot-starter-web`                    | Always          |
-| `spring-boot-starter-validation`             | Always          |
-| `springdoc-openapi-starter-webmvc-ui` 2.5.0  | Always          |
-| `dotenv-java` 3.2.0                          | Always          |
-| `spring-boot-starter-test` (test scope)      | Always          |
-| `lombok` 1.18.32 (provided)                  | `lombok=true`   |
-| `mapstruct` 1.5.5.Final                      | `mapstruct=true`|
+| Dependency                                  | Condition        |
+|---------------------------------------------|------------------|
+| `spring-boot-starter-web`                   | Always           |
+| `spring-boot-starter-validation`            | Always           |
+| `springdoc-openapi-starter-webmvc-ui` 2.5.0 | Always           |
+| `dotenv-java` 3.2.0                         | Always           |
+| `spring-boot-starter-test` (test scope)     | Always           |
+| `lombok` 1.18.32 (provided)                 | `lombok=true`    |
+| `mapstruct` 1.5.5.Final                     | `mapstruct=true` |
 
 ## The `scaffold.yml` file
 
@@ -209,13 +211,13 @@ scaffold:
 
 ## Errors
 
-| Message                                         | Cause                                                       |
-|-------------------------------------------------|-------------------------------------------------------------|
-| `Invalid architecture type: <value>`            | `architecture` is not in the [catalog](#architecture-values). |
-| `Invalid configuration type: <value>`           | `configuration` is not `yml` or `properties`.               |
-| `Output directory already exists: <path>`       | `<output>/<artifactId>` already exists. Nothing is overwritten. |
-| `Failed to create output directory: <path>`     | The directory could not be created (permissions, invalid path). |
-| `Error creating project: <detail>`              | `scaffold.yml` could not be written.                        |
+| Message                                     | Cause                                                           |
+|---------------------------------------------|-----------------------------------------------------------------|
+| `Invalid architecture type: <value>`        | `architecture` is not in the [catalog](#architecture-values).   |
+| `Invalid configuration type: <value>`       | `configuration` is not `yml` or `properties`.                   |
+| `Output directory already exists: <path>`   | `<output>/<artifactId>` already exists. Nothing is overwritten. |
+| `Failed to create output directory: <path>` | The directory could not be created (permissions, invalid path). |
+| `Error creating project: <detail>`          | `scaffold.yml` could not be written.                            |
 
 ## Examples
 
