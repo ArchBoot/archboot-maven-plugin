@@ -37,7 +37,7 @@ public class PomGenerator {
         Map<String, Object> model = buildBaseModel(dataModel);
         model.put(ConstantsPlugin.MODULES, modules.stream()
                 .map(m -> dataModel.getArtifactId() + "-" + m.getSuffix())
-                .collect(Collectors.toList()));
+                .toList());
 
         FreeMarkerGenerator.generate(
             ConstantsPlugin.POM_PARENT_HEXAGONAL, model, new File(projectDir, ConstantsPlugin.POM_XML)
