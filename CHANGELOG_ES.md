@@ -9,6 +9,31 @@ El formato se basa en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/
 ## [Unreleased]
 
 ---
+## [0.2.0] - 2026-10-08
+
+### Añadido
+- Nueva arquitectura `hexagonal_modular` para el goal `archboot:init` (`-Darchitecture=hexagonal_modular`, sin distinguir mayúsculas; también se acepta `hexagonal-modular`). Genera un proyecto Maven multimódulo:
+    - `domain` (`model`, `gateway`, `exception`): sin dependencia de Spring.
+    - `application` (`usecase`, `handler`): depende de `domain`.
+    - `infrastructure` (`config`, `input`, `output`): depende de `application` y `domain`. Contiene la clase principal y el `application.yml`/`application.properties`, y es el único módulo que reempaqueta el JAR ejecutable.
+- `pom.xml` padre agregador (`packaging: pom`) con `dependencyManagement` de los módulos, springdoc, dotenv-java, Lombok y MapStruct, y `pluginManagement` de compilación y clean.
+- Plantilla `pom.xml` por módulo, con dependencias de Lombok y MapStruct según `lombok` y `mapstruct`.
+- `ArchitectureType.HEXAGONAL_MODULAR`, registrado en `ArchitectureProcessorFactory` con su `HexagonalModularArchitectureProcessor`.
+- `ModuleLayout` y `ModuleDefinitionModel` para definir los módulos de forma declarativa (sufijo, dependencias, paquetes, pruebas y plantilla).
+- `PomGenerator.generateParent` y `generateModulePom`.
+- Prueba unitaria del caso exitoso de `hexagonal_modular`.
+
+### Cambiado
+- `ArchitectureProcessorAbstract` ahora resuelve por arquitectura el directorio de código fuente principal y el de recursos (`resolveMainSourceDir`, `resolveResourcesDir`), de modo que cada arquitectura decide dónde viven.
+- El `pom.xml` generado ahora declara `archboot-maven-plugin` en la versión `0.2.0`.
+
+---
+## [0.1.1] - 2026-10-06
+
+### Corregido
+- Se ha corregido un problema en el objetivo `archboot:init` al generar el descriptor `scaffold.yml`. El parámetro `configuration` se serializaba incorrectamente utilizando la representación `Enum` de Java, lo que daba lugar a un valor no válido que incluía la ruta de la clase del enum. Ahora, el parámetro se guarda correctamente como la cadena de texto correspondiente a su formato de configuración (por ejemplo, `yml` o `properties`).
+
+---
 ## [0.1.0] - 2026-10-06
 
 ### Añadido
@@ -33,4 +58,6 @@ y agrega arriba una nueva sección [Unreleased] vacía.
 -->
 
 [Unreleased]: https://github.com/ArchBoot/archboot-maven-plugin/commits/develop
-[0.1.0]: https://github.com/ArchBoot/archboot-maven-plugin/commits/0.1.0
+[0.1.0]: https://github.com/ArchBoot/archboot-maven-plugin/commits/v0.1.0
+[0.1.1]: https://github.com/ArchBoot/archboot-maven-plugin/compare/v0.1.0...v0.1.1
+[0.2.0]: https://github.com/ArchBoot/archboot-maven-plugin/compare/v0.1.1...v0.2.0

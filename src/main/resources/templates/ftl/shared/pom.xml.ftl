@@ -135,7 +135,7 @@
             <plugin>
                 <groupId>top.jagt.archboot.plugin</groupId>
                 <artifactId>archboot-maven-plugin</artifactId>
-                <version>0.1.0</version>
+                <version>0.2.0</version>
             </plugin>
         </plugins>
     </build>

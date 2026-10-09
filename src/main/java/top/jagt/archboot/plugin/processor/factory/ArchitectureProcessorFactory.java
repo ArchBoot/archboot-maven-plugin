@@ -2,6 +2,7 @@ package top.jagt.archboot.plugin.processor.factory;
 
 import top.jagt.archboot.plugin.model.enums.ArchitectureType;
 import top.jagt.archboot.plugin.processor.ArchitectureProcessor;
+import top.jagt.archboot.plugin.processor.impl.HexagonalModularArchitectureProcessor;
 import top.jagt.archboot.plugin.processor.impl.MvcArchitectureProcessor;
 
 import java.util.EnumMap;
@@ -17,6 +18,7 @@ public class ArchitectureProcessorFactory {
 
     static {
         PROCESSORS.put(ArchitectureType.MVC, new MvcArchitectureProcessor());
+        PROCESSORS.put(ArchitectureType.HEXAGONAL_MODULAR, new HexagonalModularArchitectureProcessor());
     }
 
     /**

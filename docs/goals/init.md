@@ -20,7 +20,8 @@ Generates a new Spring Boot project skeleton for the chosen architecture.
 - [What the goal does](#what-the-goal-does)
 - [Normalization rules](#normalization-rules)
 - [Architectures](#architectures)
-    - [`mvc`](#mvc)
+  - [`mvc`](#mvc)
+  - [`hexagonal_modular`](#hexagonal_modular)
 - [The `scaffold.yml` file](#the-scaffoldyml-file)
 - [Errors](#errors)
 - [Examples](#examples)
@@ -36,6 +37,9 @@ mvn top.jagt.archboot.plugin:archboot-maven-plugin:0.1.0:init \
 ```
 
 `groupId`, `artifactId` and `architecture` are required. Everything else has a default.
+
+> [!NOTE]
+> The `hexagonal_modular` architecture is available from version **0.2.0**. With `0.1.0` only `mvc` is accepted.
 
 ## Parameters
 
@@ -92,9 +96,10 @@ When both are enabled, the generated `pom.xml` also adds `lombok-mapstruct-bindi
 
 ### Architecture values
 
-| Value (case-insensitive) | Architecture              | Status    | Details        |
-|--------------------------|---------------------------|-----------|----------------|
-| `mvc`                    | MVC layered monolith      | Available | [`mvc`](#mvc)  |
+| Value (case-insensitive) | Architecture               | Status      | Details                                   |
+|--------------------------|----------------------------|-------------|-------------------------------------------|
+| `mvc`                    | MVC layered monolith       | Available   | [`mvc`](#mvc)                             |
+| `hexagonal_modular`      | Hexagonal modular monolith | Available   | [`hexagonal_modular`](#hexagonal_modular) |
 
 ### Configuration file values
 
@@ -108,18 +113,19 @@ When both are enabled, the generated `pom.xml` also adds `lombok-mapstruct-bindi
 1. Validates `architecture` and `configuration`.
 2. Normalizes the inputs (see [rules](#normalization-rules)).
 3. Creates the project directory `<output>/<artifactId>`.
-4. Writes [`scaffold.yml`](#the-scaffoldyml-file).
-5. Runs the processor of the selected architecture, which generates the structure, the main class, the configuration file and the base files.
+4. Validates the Java and Spring Boot versions.
+5. Writes [`scaffold.yml`](#the-scaffoldyml-file).
+6. Runs the processor of the selected architecture, which generates the structure, the main class, the configuration file and the base files.
 
 ## Normalization rules
 
-| Input                           | Rule                                                                                                                                                        | Example                                         |
-|---------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------|
-| `artifactId`                    | camelCase and separators become kebab-case, lower case, invalid characters become `-`. Falls back to `app` if empty.                                        | `My Awesome App` → `my-awesome-app`             |
-| `name`                          | If blank, uses the `artifactId` as given (before normalization).                                                                                            | `MyApp` → `MyApp`                               |
-| `packageName`                   | If blank, built from `groupId.artifactId`: lower case, `-` becomes `_`, Java keywords get a trailing `_`, segments starting with a digit get a leading `_`. | `com.example` + `my-app` → `com.example.my_app` |
-| Main class                      | PascalCase from the `artifactId` plus the `Application` suffix. Prefixed with `App` if empty or starting with a digit.                                      | `my-app` → `MyAppApplication`                   |
-| `architecture`, `configuration` | Upper-cased, `-` and spaces become `_`, then matched against the enum.                                                                                      | `mvc` → `MVC`                                   |
+| Input                           | Rule                                                                                                                                                        | Example                                                  |
+|---------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
+| `artifactId`                    | camelCase and separators become kebab-case, lower case, invalid characters become `-`. Falls back to `app` if empty.                                        | `My Awesome App` → `my-awesome-app`                      |
+| `name`                          | If blank, uses the `artifactId` as given (before normalization).                                                                                            | `MyApp` → `MyApp`                                        |
+| `packageName`                   | If blank, built from `groupId.artifactId`: lower case, `-` becomes `_`, Java keywords get a trailing `_`, segments starting with a digit get a leading `_`. | `com.example` + `my-app` → `com.example.my_app`          |
+| Main class                      | PascalCase from the `artifactId` plus the `Application` suffix. Prefixed with `App` if empty or starting with a digit.                                      | `my-app` → `MyAppApplication`                            |
+| `architecture`, `configuration` | Upper-cased, `-` and spaces become `_`, then matched against the enum.                                                                                      | `mvc` → `MVC`, `hexagonal-modular` → `HEXAGONAL_MODULAR` |
 
 An explicit `packageName` is kept as given.
 
@@ -164,28 +170,116 @@ Traditional layered monolith: controller → service → repository → model.
 
 **Generated files**
 
-| File                                   | Content                                                                                   |
-|----------------------------------------|-------------------------------------------------------------------------------------------|
-| `pom.xml`                              | Spring Boot parent, dependencies (below), compiler and Spring Boot plugins.               |
-| `<ClassName>Application.java`          | `@SpringBootApplication` entry point. Loads a `.env` file (if present) into system properties before starting. |
-| `application.yml` / `.properties`      | Sets `spring.application.name` to the project `name`.                                     |
-| `.gitignore`, `.gitattributes`         | Ignore rules for Maven, IDEs and `.env`; line-ending rules for `mvnw` and `*.cmd`.        |
-| `mvnw`, `mvnw.cmd`, `.mvn/wrapper/…`   | Maven Wrapper (Maven 3.9.10).                                                             |
-| `README.md`                            | Title with the project `name`.                                                            |
-| `scaffold.yml`                         | Description of the generation inputs.                                                     |
-| `.gitkeep`                             | Only when `gitKeep=true`, in every empty leaf directory.                                  |
+| File                                 | Content                                                                                                        |
+|--------------------------------------|----------------------------------------------------------------------------------------------------------------|
+| `pom.xml`                            | Spring Boot parent, dependencies (below), compiler and Spring Boot plugins.                                    |
+| `<ClassName>Application.java`        | `@SpringBootApplication` entry point. Loads a `.env` file (if present) into system properties before starting. |
+| `application.yml` / `.properties`    | Sets `spring.application.name` to the project `name`.                                                          |
+| `.gitignore`, `.gitattributes`       | Ignore rules for Maven, IDEs and `.env`; line-ending rules for `mvnw` and `*.cmd`.                             |
+| `mvnw`, `mvnw.cmd`, `.mvn/wrapper/…` | Maven Wrapper (Maven 3.9.10).                                                                                  |
+| `README.md`                          | Title with the project `name`.                                                                                 |
+| `scaffold.yml`                       | Description of the generation inputs.                                                                          |
+| `.gitkeep`                           | Only when `gitKeep=true`, in every empty leaf directory.                                                       |
 
 **Generated dependencies**
 
-| Dependency                                   | Condition       |
-|----------------------------------------------|-----------------|
-| `spring-boot-starter-web`                    | Always          |
-| `spring-boot-starter-validation`             | Always          |
-| `springdoc-openapi-starter-webmvc-ui` 2.5.0  | Always          |
-| `dotenv-java` 3.2.0                          | Always          |
-| `spring-boot-starter-test` (test scope)      | Always          |
-| `lombok` 1.18.32 (provided)                  | `lombok=true`   |
-| `mapstruct` 1.5.5.Final                      | `mapstruct=true`|
+| Dependency                                  | Condition        |
+|---------------------------------------------|------------------|
+| `spring-boot-starter-web`                   | Always           |
+| `spring-boot-starter-validation`            | Always           |
+| `springdoc-openapi-starter-webmvc-ui` 2.5.0 | Always           |
+| `dotenv-java` 3.2.0                         | Always           |
+| `spring-boot-starter-test` (test scope)     | Always           |
+| `lombok` 1.18.32 (provided)                 | `lombok=true`    |
+| `mapstruct` 1.5.5.Final                     | `mapstruct=true` |
+
+### `hexagonal_modular`
+
+Hexagonal (ports and adapters) architecture split into a multi-module Maven project. The root `pom.xml` is an aggregator (`packaging: pom`) that declares three modules, each one with its own `pom.xml`:
+
+```text
+<artifactId>/
+├── .gitattributes
+├── .gitignore
+├── .mvn/
+│   └── wrapper/
+│       └── maven-wrapper.properties
+├── README.md
+├── mvnw
+├── mvnw.cmd
+├── pom.xml                                # parent / aggregator
+├── scaffold.yml
+├── domain/
+│   ├── pom.xml
+│   └── src/main/java/<package path>/domain/
+│       ├── model/
+│       ├── gateway/
+│       └── exception/
+├── application/
+│   ├── pom.xml
+│   └── src/
+│       ├── main/java/<package path>/application/
+│       │   ├── usecase/
+│       │   └── handler/
+│       └── test/java/<package path>/application/
+└── infrastructure/
+    ├── pom.xml
+    └── src/
+        ├── main/
+        │   ├── java/<package path>/
+        │   │   ├── <ClassName>Application.java
+        │   │   └── infrastructure/
+        │   │       ├── config/
+        │   │       ├── input/
+        │   │       └── output/
+        │   └── resources/
+        │       └── application.yml        # or application.properties
+        └── test/java/<package path>/infrastructure/
+```
+
+| Module           | Artifact                       | Depends on                      | Packages                          | Purpose                                                          |
+|------------------|--------------------------------|---------------------------------|-----------------------------------|------------------------------------------------------------------|
+| `domain`         | `<artifactId>-domain`          | none                            | `model`, `gateway`, `exception`   | Domain entities, ports (gateways) and domain exceptions.         |
+| `application`    | `<artifactId>-application`     | `domain`                        | `usecase`, `handler`              | Use cases and handlers that orchestrate the domain.              |
+| `infrastructure` | `<artifactId>-infrastructure`  | `application`, `domain`         | `config`, `input`, `output`       | Adapters (REST, persistence, etc.), configuration and bootstrap. |
+
+The dependency rule points inwards: `infrastructure` → `application` → `domain`. The `domain` module has no dependency on Spring.
+
+> [!NOTE]
+> The main class (`<ClassName>Application.java`) and the configuration file live in the `infrastructure` module, which is the only one that repackages the executable JAR (`spring-boot-maven-plugin` is skipped in the parent and enabled with `repackage` in `infrastructure`). The `domain` module has no `src/test` directory.
+
+**Generated files**
+
+| File                                 | Content                                                                                                                                         |
+|--------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| `pom.xml` (root)                     | Spring Boot parent, `<modules>`, `dependencyManagement` (modules, springdoc, dotenv, Lombok, MapStruct) and compiler / clean plugin management. |
+| `domain/pom.xml`                     | Module `<artifactId>-domain`. Only Lombok when `lombok=true`.                                                                                   |
+| `application/pom.xml`                | Module `<artifactId>-application`. Depends on `domain`; see dependencies below.                                                                 |
+| `infrastructure/pom.xml`             | Module `<artifactId>-infrastructure`. Depends on `application` and `domain`; includes the Spring Boot `repackage` execution.                    |
+| `<ClassName>Application.java`        | `@SpringBootApplication` entry point in `infrastructure`. Loads a `.env` file (if present) into system properties before starting.              |
+| `application.yml` / `.properties`    | In `infrastructure/src/main/resources`. Sets `spring.application.name` to the project `name`.                                                   |
+| `.gitignore`, `.gitattributes`       | Same as `mvc`, generated in the project root.                                                                                                   |
+| `mvnw`, `mvnw.cmd`, `.mvn/wrapper/…` | Maven Wrapper (Maven 3.9.10), in the project root.                                                                                              |
+| `README.md`                          | Title with the project `name`.                                                                                                                  |
+| `scaffold.yml`                       | Description of the generation inputs (`architecture: HEXAGONAL_MODULAR`).                                                                       |
+| `.gitkeep`                           | Only when `gitKeep=true`, in every empty leaf directory.                                                                                        |
+
+**Generated dependencies per module**
+
+| Dependency                                  | `domain`      | `application`    | `infrastructure` |
+|---------------------------------------------|---------------|------------------|------------------|
+| `<artifactId>-domain`                       | n/a           | Always           | Always           |
+| `<artifactId>-application`                  |               | n/a              | Always           |
+| `spring-context` (provided)                 |               | Always           |                  |
+| `spring-boot-starter-web`                   |               |                  | Always           |
+| `spring-boot-starter-validation`            |               | Always           | Always           |
+| `springdoc-openapi-starter-webmvc-ui`       |               |                  | Always           |
+| `dotenv-java`                               |               |                  | Always           |
+| `spring-boot-starter-test` (test scope)     |               |                  | Always           |
+| `lombok`                                    | `lombok=true` | `lombok=true`    | `lombok=true`    |
+| `mapstruct`                                 |               | `mapstruct=true` | `mapstruct=true` |
+
+Dependency versions (`springdoc` 2.5.0, `dotenv-java` 3.2.0, `lombok` 1.18.32, `mapstruct` 1.5.5.Final) are declared once in the root `pom.xml` and inherited by the modules.
 
 ## The `scaffold.yml` file
 
@@ -207,15 +301,21 @@ scaffold:
         extension: YML
 ```
 
+With `-Darchitecture=hexagonal_modular` the only difference is `architecture: HEXAGONAL_MODULAR`.
+
 ## Errors
 
-| Message                                         | Cause                                                       |
-|-------------------------------------------------|-------------------------------------------------------------|
-| `Invalid architecture type: <value>`            | `architecture` is not in the [catalog](#architecture-values). |
-| `Invalid configuration type: <value>`           | `configuration` is not `yml` or `properties`.               |
-| `Output directory already exists: <path>`       | `<output>/<artifactId>` already exists. Nothing is overwritten. |
-| `Failed to create output directory: <path>`     | The directory could not be created (permissions, invalid path). |
-| `Error creating project: <detail>`              | `scaffold.yml` could not be written.                        |
+| Message                                      | Cause                                                           |
+|----------------------------------------------|-----------------------------------------------------------------|
+| `Invalid architecture type: <value>`         | `architecture` is not in the [catalog](#architecture-values).   |
+| `Invalid configuration type: <value>`        | `configuration` is not `yml` or `properties`.                   |
+| `Output directory already exists: <path>`    | `<output>/<artifactId>` already exists. Nothing is overwritten. |
+| `Failed to create output directory: <path>`  | The directory could not be created (permissions, invalid path). |
+| `Java version not supported: <value>`        | `javaVersion` is lower than 17.                                 |
+| `Invalid Java version: <value>`              | `javaVersion` is not an integer (for example `1.8`).            |
+| `Spring Boot version not supported: <value>` | The Spring Boot major version is lower than 4.                  |
+| `Invalid Spring Boot version: <value>`       | `springVersion` is not in `major.minor[.patch]` numeric format. |
+| `Error creating project: <detail>`           | `scaffold.yml` could not be written.                            |
 
 ## Examples
 
@@ -241,4 +341,12 @@ mvn archboot:init \
     -Dname="Billing Service" -DpackageName=com.acme.billing \
     -Dversion=1.0.0-SNAPSHOT -Dlombok=true -Dmapstruct=true \
     -Doutput=$HOME/workspace
+```
+
+**Hexagonal modular**
+
+```bash
+mvn archboot:init \
+    -DgroupId=com.example -DartifactId=orders-api -Darchitecture=hexagonal_modular \
+    -Dlombok=true -Dmapstruct=true -DgitKeep=true
 ```

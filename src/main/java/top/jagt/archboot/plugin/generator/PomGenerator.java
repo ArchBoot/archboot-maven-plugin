@@ -1,12 +1,14 @@
 package top.jagt.archboot.plugin.generator;
 
 import top.jagt.archboot.plugin.model.DataModel;
+import top.jagt.archboot.plugin.model.ModuleDefinitionModel;
 import top.jagt.archboot.plugin.model.ScaffoldModel;
 import top.jagt.archboot.plugin.utils.ConstantsPlugin;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,6 +25,43 @@ public class PomGenerator {
     public void generateStandard(ScaffoldModel scaffold, File projectDir) throws IOException {
         FreeMarkerGenerator.generate(
                 ConstantsPlugin.POM_SHARED,
+                buildBaseModel(scaffold.getData()),
+                new File(projectDir, ConstantsPlugin.POM_XML)
+        );
+    }
+
+    /**
+     * Generates the parent {@code pom.xml} for a hexagonal modular project.
+     *
+     * @param scaffold   the scaffold model providing the template data
+     * @param projectDir the project directory
+     * @param modules    the list of module definitions
+     * @throws IOException if the template cannot be processed or the file written
+     */
+    public void generateParent(ScaffoldModel scaffold, File projectDir, List<ModuleDefinitionModel> modules) throws IOException {
+        DataModel dataModel = scaffold.getData();
+
+        Map<String, Object> model = buildBaseModel(dataModel);
+        model.put(ConstantsPlugin.MODULES, modules.stream()
+                .map(m -> dataModel.getArtifactId() + "-" + m.getSuffix())
+                .toList());
+
+        FreeMarkerGenerator.generate(
+            ConstantsPlugin.POM_PARENT_HEXAGONAL, model, new File(projectDir, ConstantsPlugin.POM_XML)
+        );
+    }
+
+    /**
+     * Generates a module-specific {@code pom.xml} file.
+     *
+     * @param scaffold   the scaffold model providing the template data
+     * @param projectDir the project directory
+     * @param templatePath the path to the FreeMarker template
+     * @throws IOException if the template cannot be processed or the file written
+     */
+    public void generateModulePom(ScaffoldModel scaffold, File projectDir, String templatePath) throws IOException {
+        FreeMarkerGenerator.generate(
+                templatePath,
                 buildBaseModel(scaffold.getData()),
                 new File(projectDir, ConstantsPlugin.POM_XML)
         );

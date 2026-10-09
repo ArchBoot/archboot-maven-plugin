@@ -9,6 +9,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ## [Unreleased]
 
 ---
+## [0.2.0] - 2026-10-08
+### Added
+- New `hexagonal_modular` architecture for the `archboot:init` goal (`-Darchitecture=hexagonal_modular`, case-insensitive; `hexagonal-modular` is also accepted). It generates a multi-module Maven project:
+    - `domain` (`model`, `gateway`, `exception`): no dependency on Spring.
+    - `application` (`usecase`, `handler`): depends on `domain`.
+    - `infrastructure` (`config`, `input`, `output`): depends on `application` and `domain`. It holds the main class and the `application.yml`/`application.properties`, and is the only module that repackages the executable JAR.
+- Aggregator parent `pom.xml` (`packaging: pom`) with `dependencyManagement` for the modules, springdoc, dotenv-java, Lombok and MapStruct, and `pluginManagement` for compiler and clean.
+- A `pom.xml` template for each module, with Lombok and MapStruct dependencies according to `lombok` and `mapstruct`.
+- `ArchitectureType.HEXAGONAL_MODULAR`, registered in `ArchitectureProcessorFactory` with its `HexagonalModularArchitectureProcessor`.
+- `ModuleLayout` and `ModuleDefinitionModel` to declaratively define the modules (suffix, dependencies, packages, tests, template).
+- `PomGenerator.generateParent` and `generateModulePom`.
+- Unit test for the `hexagonal_modular` happy path.
+
+### Changed
+- `ArchitectureProcessorAbstract` now resolves the main source directory and the resources directory per architecture (`resolveMainSourceDir`, `resolveResourcesDir`), so each architecture decides where they live.
+- The generated `pom.xml` now declares `archboot-maven-plugin` at version `0.2.0`.
+
+---
+## [0.1.1] - 2026-10-06
+
+### Fixed
+- Fixed an issue in the `archboot:init` goal when generating the `scaffold.yml` descriptor. The `configuration` parameter was incorrectly serialized using the Java `Enum` representation, resulting in an invalid value containing the enum class path. The parameter is now correctly persisted as its corresponding configuration format string (for example, `yml` or `properties`).
+
+---
 ## [0.1.0] - 2026-10-06
 
 ### Added
@@ -29,4 +53,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 
 [Unreleased]: https://github.com/ArchBoot/archboot-maven-plugin/commits/develop
-[0.1.0]: https://github.com/ArchBoot/archboot-maven-plugin/commits/0.1.0
+[0.1.0]: https://github.com/ArchBoot/archboot-maven-plugin/commits/v0.1.0
+[0.1.1]: https://github.com/ArchBoot/archboot-maven-plugin/compare/v0.1.0...v0.1.1
+[0.2.0]: https://github.com/ArchBoot/archboot-maven-plugin/compare/v0.1.1...v0.2.0
