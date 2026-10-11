@@ -9,7 +9,9 @@ public enum ArchitectureType {
     /** Traditional Model-View-Controller layered architecture. */
     MVC,
     /** Hexagonal with modules layered architecture **/
-    HEXAGONAL_MODULAR;
+    HEXAGONAL_MODULAR,
+    /** Microservice layered architecture **/
+    MICROSERVICE;
 
     /**
      * Resolve an {@link ArchitectureType} from a string value.
